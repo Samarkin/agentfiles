@@ -17,6 +17,11 @@ The script hardlinks every file from `~/.agentfiles/steering` into `~/.kiro/stee
 and `~/.claude/rules`. An agent whose config directory does not exist is skipped,
 and existing files that are not already hardlinks are left untouched.
 
+For Claude, it also hardlinks `settings/claude-statusline.sh` to `~/.claude/statusline-command.sh`
+and, using `jq`, adds a `statusLine` entry that runs it to `~/.claude/settings.json`.
+If `settings.json` already defines a different `statusLine`, the script leaves it as is
+and reports an error.
+
 ### To update
 
 ```
@@ -34,6 +39,8 @@ only links files that were added since the last install.
 for d in ~/.kiro/steering ~/.claude/rules; do for f in ~/.agentfiles/steering/*; do [ "$f" -ef "$d/$(basename $f)" ] && rm "$d/$(basename $f)"; done; done
 rm -rf ~/.agentfiles
 ```
+
+This does not delete the Claude status line script.
 
 ## Compatibility
 
